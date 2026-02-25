@@ -22,3 +22,8 @@ sdlc-agent-skills/
 - **Purpose**: Systematically fix GitHub PR review comments, Copilot suggestions, and CI test failures
 - **Documentation**: `skills/fix-github-pr/SKILL.md`
 - **Triggers**: "fix PR", "fix PR comments", "resolve review", "address Copilot feedback", "fix CI", "fix failing tests on PR"
+
+### project-implementation
+- **Purpose**: Progressively implement a project from its documentation and specification in docs/
+- **Documentation**: `skills/project-implementation/SKILL.md`
+- **Triggers**: "implement project", "continue implementation", "build from docs", "implement from spec"

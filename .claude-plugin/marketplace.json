@@ -15,7 +15,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/fix-github-pr"
+        "./skills/fix-github-pr",
+        "./skills/project-implementation"
       ]
     }
   ]
