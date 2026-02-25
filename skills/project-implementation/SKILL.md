@@ -7,9 +7,30 @@ description: Implement a project from its documentation and specification. Use w
 
 ## Overview
 
-Progressively implement a project that is documented and specified in `docs/`. Work through a structured todo list, implementing one phase/section at a time, running tests, committing, and updating progress tracking files after each step.
+Implement a project that is documented and specified in `docs/`. Work through a structured todo list, implementing ALL phases and sections in a single continuous session, running tests, committing, and updating progress tracking files after each step.
 
-**Core principle:** Never skip tests. Never mark a task as done without verified implementation. Always commit after each completed section. Always update tracking files before moving to the next task.
+**Core principles:**
+
+- **NEVER stop between phases.** Implement ALL phases from start to finish in one continuous session. Do NOT pause after completing a phase to ask if you should continue — just continue.
+- **NEVER ask the user questions.** If you encounter ambiguity, uncertainty, or need to make a decision, make your best judgment based on the documentation and record the question/decision in `docs/questions.md` for later review. NEVER use AskUserQuestion or stop to ask for input.
+- **Never skip tests.** Never mark a task as done without verified implementation. Always commit after each completed section. Always update tracking files before moving to the next task.
+
+### Questions Protocol
+
+When you encounter a question, ambiguity, or need to make a judgment call:
+
+1. **DO NOT stop or ask the user** — make the best decision you can based on available documentation
+2. **Record it in `docs/questions.md`** with the following format:
+
+   ```markdown
+   ## [Phase X — Section Name]
+
+   **Q:** What is the expected behavior when X happens?
+   **Decision:** I chose to do Y because Z.
+   **Impact:** Low/Medium/High — affects [description].
+   ```
+
+3. **Continue implementing** — the user will review `docs/questions.md` after all development is complete
 
 ## The Process
 
@@ -155,22 +176,21 @@ Append a summary of what was implemented:
 **Commit:** `abc1234`
 ```
 
-#### 3f. Clear Context and Restart
+#### 3f. Commit Tracking Updates and Continue
 
 After updating tracking files:
 
 1. **Commit the tracking file updates**:
    ```bash
-   git add docs/todo.md docs/implemented.md
+   git add docs/todo.md docs/implemented.md docs/questions.md
    git commit -m "docs: update implementation progress
 
    Co-Authored-By: Claude <noreply@anthropic.com>"
    ```
 
-2. **Stop and restart the process from Phase 1**
-   - This ensures fresh context for the next section
-   - Prevents context window overflow on large projects
-   - Each cycle is self-contained: read → implement → test → commit → update → restart
+2. **Immediately continue to the next unchecked section** — do NOT stop, do NOT ask the user, do NOT restart the process. Loop back to step 3a with the next section.
+
+**CRITICAL: Do NOT stop between phases.** The entire project must be implemented in a single continuous session. Move from one section to the next without interruption until ALL items in `todo.md` are checked.
 
 ### Phase 4: Completion
 
@@ -178,7 +198,8 @@ When all items in `todo.md` are checked (`- [x]`):
 
 1. Run the full test suite one final time
 2. Update `docs/implemented.md` with a completion summary
-3. Inform the user that implementation is complete
+3. If `docs/questions.md` has entries, inform the user to review it
+4. Inform the user that implementation is complete
 
 ## Quick Reference
 
@@ -192,7 +213,7 @@ When all items in `todo.md` are checked (`- [x]`):
 | 6. Test | Run tests | All tests pass |
 | 7. Commit | Git commit the implementation | Clean commit history |
 | 8. Track | Update todo.md + implemented.md | Progress recorded |
-| 9. Restart | Clear context, go to step 1 | Fresh context for next cycle |
+| 9. Continue | Loop to step 5 with next section | All phases completed |
 
 ## Red Flags — STOP and Reassess
 
@@ -202,10 +223,11 @@ When all items in `todo.md` are checked (`- [x]`):
 - Making changes outside the scope of the current section
 - Committing without running tests
 - Not updating tracking files after each cycle
-- Trying to implement everything in one cycle (risk of context overflow)
+- **Stopping between phases to ask the user questions** — save questions to `docs/questions.md` and continue
+- **Pausing after a phase to ask "Shall I continue?"** — ALWAYS continue automatically
 - Moving to the next section when tests are failing
 
-**STOP. Follow the process.**
+**NEVER STOP. NEVER ASK. Follow the process until ALL phases are complete.**
 
 ## Common Rationalizations
 
@@ -217,11 +239,15 @@ When all items in `todo.md` are checked (`- [x]`):
 | "Tests aren't set up yet, skip them" | Setting up tests IS part of Phase 0. |
 | "I remember what was done, skip reading docs" | Always re-read — context may have been cleared. |
 | "The todo is too granular" | Granular tasks = clear progress + clean commits. |
+| "Let me ask the user about this" | Save to `docs/questions.md` and keep going. |
+| "Phase X is done, let me check with the user" | NEVER stop — continue to the next phase immediately. |
 
 ## Notes
 
-- **Always re-read docs at the start of each cycle** — context may have been compressed or cleared
-- **One section per cycle** — keeps commits atomic and context fresh
+- **NEVER stop between phases** — implement ALL phases in one continuous session
+- **NEVER ask the user questions** — save decisions and questions to `docs/questions.md`
+- **One section per commit** — keeps commits atomic and history clean
 - **The todo.md is the source of truth** — if it's not checked, it's not done
 - **The implemented.md is the audit log** — always record what was done and the commit hash
 - **Detect the project's tech stack** from docs and existing files to use the correct test/build commands
+- **The questions.md is for post-implementation review** — the user reads it after everything is done
