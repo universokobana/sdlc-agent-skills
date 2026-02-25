@@ -1,26 +1,21 @@
 {
-  "name": "kobana-agent-skills",
+  "name": "sdlc-agent-skills",
   "owner": {
     "name": "Kobana",
     "email": "contato@kobana.com.br"
   },
   "metadata": {
-    "description": "Kobana skills para automação financeira e processamento de documentos",
+    "description": "SDLC skills for software development lifecycle automation",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "kobana-agent-skills",
-      "description": "Kobana financial automation skills for Pix charges, bank slips, and payment processing",
+      "name": "sdlc-agent-skills",
+      "description": "SDLC automation skills for GitHub PR workflows, CI/CD, and code review",
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/api-charge-pix",
-        "./skills/mcp-charge-pix",
-        "./skills/api-transfer-pix",
-        "./skills/mcp-transfer-pix",
-        "./skills/api-payment-pix",
-        "./skills/mcp-payment-pix"
+        "./skills/fix-github-pr"
       ]
     }
   ]

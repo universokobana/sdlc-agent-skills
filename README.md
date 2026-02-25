@@ -1,10 +1,10 @@
 *[Leia em Português](README.pt-BR.md)*
 
-> **Note:** This repository is a fork of [Anthropic's skills repository](https://github.com/anthropics/skills), adapted for [Kobana](https://ai.kobana.com.br) - a financial automation platform with native AI. For information about the Agent Skills standard, see [agentskills.io](http://agentskills.io).
+> **Note:** This repository is based on the [Agent Skills standard](http://agentskills.io) for Claude. It contains SDLC (Software Development Lifecycle) skills for automating development workflows.
 
 # Skills
 
-Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way, whether that's creating documents with your company's brand guidelines, analyzing data using your organization's specific workflows, or automating personal tasks.
+Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way.
 
 For more information, check out:
 - [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
@@ -14,22 +14,13 @@ For more information, check out:
 
 # About This Repository
 
-This repository contains Kobana's official skills for financial automation with Claude. These skills help you interact with Kobana's APIs and MCP servers for Pix charges, payments, and financial operations.
-
-## About Kobana
-
-[Kobana](https://www.kobana.com.br) is a financial automation platform that connects businesses to over 40 Brazilian banks through a unified API. With more than R$ 50 billion in processed transactions and 5+ million monthly banking operations, Kobana offers payment, collection, and transfer solutions with native AI integration.
+This repository contains SDLC skills for automating software development workflows with Claude — including PR reviews, CI fixes, and code quality automation.
 
 ## Available Skills
 
 | Skill | Description |
 |-------|-------------|
-| [api-charge-pix](./skills/api-charge-pix) | Create and manage Pix charges using Kobana REST API |
-| [mcp-charge-pix](./skills/mcp-charge-pix) | Create and manage Pix charges using kobana-mcp-charge MCP server |
-| [api-transfer-pix](./skills/api-transfer-pix) | Create and manage Pix transfers using Kobana REST API |
-| [mcp-transfer-pix](./skills/mcp-transfer-pix) | Create and manage Pix transfers using kobana-mcp-transfer MCP server |
-| [api-payment-pix](./skills/api-payment-pix) | Pay Pix charges and decode QR codes using Kobana REST API |
-| [mcp-payment-pix](./skills/mcp-payment-pix) | Pay Pix charges and decode QR codes using kobana-mcp-payment MCP server |
+| [fix-github-pr](./skills/fix-github-pr) | Fix GitHub PR review comments, Copilot suggestions, and CI test failures |
 
 ## Disclaimer
 
@@ -37,9 +28,8 @@ This repository contains Kobana's official skills for financial automation with 
 
 # Repository Structure
 
-- [./skills](./skills): Kobana financial automation skills
+- [./skills](./skills): SDLC automation skills
 - [./spec](./spec): The Agent Skills specification
-  - [Kobana Agent Skills Structure](./spec/kobana-agent-skills-structure.md): Standard structure for API and MCP-based skills
 - [./template](./template): Skill template
 
 # Try in Claude Code, Claude.ai, and the API
@@ -48,27 +38,24 @@ This repository contains Kobana's official skills for financial automation with 
 
 You can register this repository as a Claude Code Plugin marketplace by running the following command in Claude Code:
 ```
-/plugin marketplace add universokobana/kobana-agent-skills
+/plugin marketplace add universokobana/sdlc-agent-skills
 ```
 
-Then, to install the Kobana skills:
+Then, to install the skills:
 1. Select `Browse and install plugins`
-2. Select `kobana-agent-skills`
-3. Select `kobana-agent-skills`
+2. Select `sdlc-agent-skills`
+3. Select `sdlc-agent-skills`
 4. Select `Install now`
 
 Alternatively, directly install via:
 ```
-/plugin install kobana-agent-skills@kobana-agent-skills
+/plugin install sdlc-agent-skills@sdlc-agent-skills
 ```
 
 After installing the plugin, you can use the skill by just mentioning it. For example:
-- "Use the api-charge-pix skill to create a Pix charge of R$ 100.00"
-- "Use the mcp-charge-pix skill to list my Pix accounts"
-- "Use the api-transfer-pix skill to send a Pix transfer of R$ 500.00"
-- "Use the mcp-transfer-pix skill to create a transfer batch"
-- "Use the api-payment-pix skill to pay a Pix QR code"
-- "Use the mcp-payment-pix skill to decode and pay a Pix invoice"
+- "Fix PR #42"
+- "Fix the review comments on my PR"
+- "Fix CI failures on this PR"
 
 ## Claude.ai
 
@@ -111,11 +98,3 @@ The frontmatter requires only two fields:
 - `description` - A complete description of what the skill does and when to use it
 
 The markdown content below contains the instructions, examples, and guidelines that Claude will follow. For more details, see [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills).
-
-# Additional Resources
-
-- [Kobana Website](https://www.kobana.com.br)
-- [Kobana AI](https://ai.kobana.com.br)
-- [Kobana API Documentation](https://developers.kobana.com.br)
-- [Kobana MCP Servers](https://github.com/universokobana/kobana-mcp-servers)
-- [Kobana API Specs](https://github.com/universokobana/kobana-api-specs)
