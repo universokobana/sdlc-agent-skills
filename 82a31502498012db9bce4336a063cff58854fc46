@@ -1,0 +1,23 @@
+skills/fix-github-pr/SKILL.md
+  f59cbb7012e103e7 67-91,94,147,149,152-164,167,253-254
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.5",
+  "base_commit_sha": "82a31502498012db9bce4336a063cff58854fc46",
+  "prompts": {
+    "f59cbb7012e103e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aa4fc9f6-10fe-4a09-b368-8357ec86aefc",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Rafael Lima <contato@rafael.adm.br>",
+      "messages": [],
+      "total_additions": 46,
+      "total_deletions": 8,
+      "accepted_lines": 46,
+      "overriden_lines": 0
+    }
+  }
+}
