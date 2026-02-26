@@ -64,11 +64,34 @@ Collect ALL issues in parallel before starting to fix:
 #### 2a. Review Comments
 
 ```bash
-gh api repos/:owner/:repo/pulls/$PR_NUMBER/comments \
-  --jq '.[] | {id, path, line, body, user: .user.login}'
+# Get review threads with their node IDs (needed to resolve them later)
+gh api graphql -f query='
+  query {
+    repository(owner: ":owner", name: ":repo") {
+      pullRequest(number: '$PR_NUMBER') {
+        reviewThreads(first: 100) {
+          nodes {
+            id
+            isResolved
+            comments(first: 10) {
+              nodes {
+                id
+                databaseId
+                path
+                line
+                body
+                author { login }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+'
 ```
 
-Filter for **unresolved** comments only. Skip already-resolved threads.
+Filter for **unresolved** threads only (`isResolved: false`). Save each thread's `id` (node ID) — it will be used to resolve the conversation after implementing the fix.
 
 #### 2b. CI Test Failures
 
@@ -121,13 +144,27 @@ git commit -m "fix: address PR review comment in <file>
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 ```
 
-#### 3e. Resolve the Comment
+#### 3e. Resolve the Conversation
+
+After committing the fix, resolve the review thread on GitHub:
 
 ```bash
-gh api repos/:owner/:repo/pulls/comments/$COMMENT_ID \
-  --method PATCH \
-  --field body="✅ Corrigido no commit <hash>"
+# Reply to the comment confirming the fix
+gh api repos/:owner/:repo/pulls/$PR_NUMBER/comments/$COMMENT_ID/replies \
+  --method POST \
+  --field body="✅ Corrigido no commit $(git rev-parse --short HEAD)"
+
+# Resolve the review thread using the thread node ID from Phase 2a
+gh api graphql -f query='
+  mutation {
+    resolveReviewThread(input: {threadId: "'$THREAD_NODE_ID'"}) {
+      thread { isResolved }
+    }
+  }
+'
 ```
+
+**IMPORTANT:** Only resolve threads where the code was actually implemented and committed. If the comment was replied to with a justification (not implemented), do NOT resolve the thread — let the reviewer decide.
 
 ### Phase 4: Fix CI Test Failures (Loop)
 
@@ -213,7 +250,8 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 
 ## Red Flags — STOP and Reassess
 
-- Marking a comment resolved WITHOUT a commit
+- Marking a conversation resolved WITHOUT a commit
+- Resolving a thread where the fix was NOT implemented (only replied with justification)
 - Running the full test suite (only run related specs)
 - Making changes outside the scope of the comment
 - Skipping spec creation for new behavior
